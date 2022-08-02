@@ -14,7 +14,10 @@ class NumViewsFilter(admin.SimpleListFilter):
         ).aggregate(
             max_value=Max('count_views')
         )['max_value']
-        return [(i, i) for i in range(max_value + 1)]
+        if max_value:
+            return [(i, i) for i in range(max_value + 1)]
+        else:
+            return []
 
     def queryset(self, request, queryset):
         if self.value() is None:
